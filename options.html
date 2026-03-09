@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fast Gemini – Cài đặt</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body { padding: 10px 0; background: var(--bg); }
+  </style>
+</head>
+<body>
+  <div class="options-container">
+
+    <div class="options-header">
+      <img src="icons/icon48.png" alt="logo" class="options-logo" />
+      <h1>Fast Gemini – Cài đặt</h1>
+    </div>
+
+    <!-- ── Authentication ── -->
+    <p class="section-title">Xác thực</p>
+
+    <div class="form-group">
+      <label class="form-label" for="inputPAT">GitHub Personal Access Token</label>
+      <div class="input-password-wrap">
+        <input type="password" id="inputPAT" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
+        <button class="toggle-password" id="togglePAT" title="Hiện/Ẩn token">👁</button>
+      </div>
+      <p class="form-hint">
+        Tạo token tại
+        <a href="https://github.com/settings/tokens/new?scopes=&description=Fast-Gemini-Copilot" target="_blank">
+          github.com/settings/tokens
+        </a>
+        (không cần scope nào thêm – Copilot dùng subscription của tài khoản).<br />
+        Token cần tài khoản có <strong>GitHub Copilot subscription</strong> đang hoạt động.
+      </p>
+    </div>
+
+    <div class="form-group">
+      <button class="btn-primary" id="btnValidate" style="width:auto">🔍 Kiểm tra kết nối</button>
+    </div>
+
+    <div class="alert alert-success" id="alertSuccess">
+      ✅ <span id="alertSuccessText">Kết nối thành công!</span>
+    </div>
+    <div class="alert alert-error" id="alertError">
+      ❌ <span id="alertErrorText"></span>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- ── Model selection ── -->
+    <p class="section-title">Mô hình AI</p>
+
+    <div class="form-group">
+      <div class="model-grid" id="modelGrid">
+        <div class="model-option selected" data-model="gpt-4o">
+          <div class="model-name">GPT-4o</div>
+          <div class="model-desc">Mạnh mẽ, cân bằng tốc độ & chất lượng</div>
+        </div>
+        <div class="model-option" data-model="gpt-4o-mini">
+          <div class="model-name">GPT-4o mini</div>
+          <div class="model-desc">Nhanh hơn, tốn ít quota hơn</div>
+        </div>
+        <div class="model-option" data-model="o1-preview">
+          <div class="model-name">o1-preview</div>
+          <div class="model-desc">Lý luận phức tạp, chậm hơn</div>
+        </div>
+        <div class="model-option" data-model="o1-mini">
+          <div class="model-name">o1-mini</div>
+          <div class="model-desc">Lý luận nhẹ, nhanh hơn o1</div>
+        </div>
+      </div>
+      <p class="form-hint" style="margin-top:8px">
+        Copilot API hỗ trợ các mô hình phổ biến của OpenAI qua endpoint tương thích.
+        Nếu mô hình chưa được phép, Copilot sẽ tự động chuyển về GPT-4o.
+      </p>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- ── System prompt ── -->
+    <p class="section-title">System Prompt (tuỳ chọn)</p>
+
+    <div class="form-group">
+      <label class="form-label" for="inputSystemPrompt">Hướng dẫn hệ thống</label>
+      <textarea
+        id="inputSystemPrompt"
+        rows="4"
+        placeholder="Ví dụ: Bạn là trợ lý lập trình viên. Luôn trả lời bằng tiếng Việt và giải thích rõ ràng."
+      ></textarea>
+      <p class="form-hint">Để trống nếu không cần hướng dẫn đặc biệt.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- ── Info ── -->
+    <p class="section-title">Thông tin & Giới hạn</p>
+
+    <div class="alert alert-info show" style="margin-top:0">
+      ℹ️
+      <div>
+        <strong>Copilot API hiện đang được sử dụng qua endpoint nội bộ</strong>
+        (<code>api.githubcopilot.com</code>). GitHub có thể thay đổi hoặc giới hạn
+        quyền truy cập bất kỳ lúc nào. Nếu có endpoint chính thức/public được công bố,
+        extension sẽ được cập nhật tự động.<br /><br />
+        <strong>Giới hạn:</strong>
+        <ul style="margin: 6px 0 0 16px; font-size:12px">
+          <li>Copilot Individual: ~300 lần gợi ý/tháng</li>
+          <li>Copilot Business/Enterprise: cao hơn, phụ thuộc plan</li>
+          <li>Token Copilot hết hạn sau ~30 phút (extension tự làm mới)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ── Actions ── -->
+    <div class="actions-row">
+      <button class="btn-primary" id="btnSave">💾 Lưu cài đặt</button>
+      <button class="btn-primary" id="btnReset" style="background:var(--surface2); color:var(--text-muted)">
+        🔄 Đặt lại
+      </button>
+    </div>
+
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
