@@ -49,14 +49,22 @@ async function getCopilotToken(githubPat) {
     return _cachedToken.token;
   }
 
-  const response = await fetch(GITHUB_TOKEN_URL, {
-    method: 'GET',
-    headers: {
-      Authorization: `token ${githubPat}`,
-      Accept: 'application/json',
-      'User-Agent': 'GitHubCopilot/1.155.0',
-    },
-  });
+  let response;
+  try {
+    response = await fetch(GITHUB_TOKEN_URL, {
+      method: 'GET',
+      headers: {
+        Authorization: `token ${githubPat}`,
+        Accept: 'application/json',
+        'User-Agent': 'GitHubCopilot/1.155.0',
+      },
+    });
+  } catch (networkErr) {
+    throw new CopilotError(
+      'NETWORK_ERROR',
+      `Không thể kết nối đến GitHub (lỗi mạng). Kiểm tra kết nối internet của bạn. Chi tiết: ${networkErr.message}`
+    );
+  }
 
   if (!response.ok) {
     const text = await response.text().catch(() => '');
@@ -65,6 +73,12 @@ async function getCopilotToken(githubPat) {
     }
     if (response.status === 403) {
       throw new CopilotError('NO_COPILOT', 'Tài khoản của bạn không có quyền truy cập GitHub Copilot. Hãy đảm bảo bạn có subscription Copilot.');
+    }
+    if (response.status === 404) {
+      throw new CopilotError(
+        'ENDPOINT_NOT_FOUND',
+        'Endpoint Copilot API không tìm thấy (HTTP 404). Tài khoản có thể chưa được kích hoạt GitHub Copilot hoặc endpoint đã thay đổi. Hãy kiểm tra subscription tại github.com/features/copilot.'
+      );
     }
     throw new CopilotError('TOKEN_FETCH_FAILED', `Không thể lấy Copilot token (HTTP ${response.status}): ${text}`);
   }
@@ -108,15 +122,23 @@ async function chatWithCopilot(githubPat, messages, options = {}) {
     n: 1,
   };
 
-  const response = await fetch(COPILOT_CHAT_URL, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      ...COPILOT_EDITOR_HEADERS,
-    },
-    body: JSON.stringify(body),
-  });
+  let response;
+  try {
+    response = await fetch(COPILOT_CHAT_URL, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        ...COPILOT_EDITOR_HEADERS,
+      },
+      body: JSON.stringify(body),
+    });
+  } catch (networkErr) {
+    throw new CopilotError(
+      'NETWORK_ERROR',
+      `Không thể kết nối đến Copilot API (lỗi mạng). Kiểm tra kết nối internet của bạn. Chi tiết: ${networkErr.message}`
+    );
+  }
 
   if (!response.ok) {
     const text = await response.text().catch(() => '');

@@ -64,15 +64,16 @@ function setStatus(type, text) {
 
 function errorLabel(code, fallback) {
   const labels = {
-    NO_PAT:           'Chưa cấu hình GitHub Token',
-    INVALID_PAT:      'Token GitHub không hợp lệ',
-    NO_COPILOT:       'Tài khoản chưa có Copilot',
-    TOKEN_EXPIRED:    'Phiên Copilot hết hạn',
-    RATE_LIMITED:     'Đã vượt giới hạn yêu cầu',
-    QUOTA_EXCEEDED:   'Đã hết hạn mức Copilot',
-    TOKEN_FETCH_FAILED: 'Không thể xác thực với GitHub',
-    API_ERROR:        'Lỗi Copilot API',
-    EMPTY_RESPONSE:   'Phản hồi rỗng từ Copilot',
+    NO_PAT:             'Chưa cấu hình GitHub Token',
+    INVALID_PAT:        'Token GitHub không hợp lệ',
+    NO_COPILOT:         'Tài khoản chưa có Copilot',
+    TOKEN_EXPIRED:      'Phiên Copilot hết hạn',
+    TOKEN_PARSE_FAILED: 'Phản hồi GitHub không hợp lệ',
+    RATE_LIMITED:       'Đã vượt giới hạn yêu cầu',
+    QUOTA_EXCEEDED:     'Đã hết hạn mức Copilot',
+    EMPTY_RESPONSE:     'Phản hồi rỗng từ Copilot',
+    // TOKEN_FETCH_FAILED, ENDPOINT_NOT_FOUND, NETWORK_ERROR, API_ERROR:
+    // pass through the detail from background.js (contains HTTP status / context)
   };
   return labels[code] || fallback || 'Lỗi không xác định';
 }

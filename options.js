@@ -89,9 +89,11 @@ function errorMessage(code, fallback) {
     NO_PAT:             'Vui lòng nhập GitHub Personal Access Token.',
     INVALID_PAT:        'Token không hợp lệ hoặc đã hết hạn. Hãy tạo token mới tại github.com/settings/tokens.',
     NO_COPILOT:         'Tài khoản của bạn chưa có GitHub Copilot subscription. Hãy đăng ký tại github.com/features/copilot.',
-    TOKEN_FETCH_FAILED: 'Không thể kết nối đến GitHub. Kiểm tra lại kết nối mạng và token.',
+    TOKEN_PARSE_FAILED: 'GitHub trả về phản hồi không hợp lệ. Vui lòng thử lại.',
     RATE_LIMITED:       'Đã vượt quá giới hạn yêu cầu. Vui lòng thử lại sau vài phút.',
     QUOTA_EXCEEDED:     'Hạn mức Copilot đã hết. Kiểm tra subscription của bạn.',
+    // TOKEN_FETCH_FAILED, ENDPOINT_NOT_FOUND, NETWORK_ERROR: pass through the
+    // fallback message from background.js (contains HTTP status / network detail)
   };
   return messages[code] || fallback || 'Đã xảy ra lỗi không xác định.';
 }
